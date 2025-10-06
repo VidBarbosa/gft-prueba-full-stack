@@ -22,12 +22,12 @@
 ---
 
 ## 🗺️ Arquitectura
-
-```mermaid
+```
 flowchart LR
-  UA[Usuario/API Client] -->|HTTPS| GW[FastAPI / Uvicorn]
+  UA[Usuario / API Client] -->|HTTPS| GW[FastAPI / Uvicorn]
+
   subgraph App
-    GW --> MW[Middlewares\nSecurity/CORS/GZip/AccessLog]
+    GW --> MW[Middlewares: Security, CORS, GZip, AccessLog]
     MW --> R[Routers /api/v1/*]
     R --> S[Services (Domain)]
     S --> Repo[(Repositories)]
@@ -35,10 +35,12 @@ flowchart LR
     R --> RL[Rate Limiter (SlowAPI)]
     MW --> Log[Structlog JSON]
   end
+
   Repo --> MDB[(MongoDB)]
   RL --> REDIS[(Redis)]
   Log --> AUDIT[(MongoDB audit_logs)]
 ```
+
 
 **draw\.io** (editable): `docs/architecture_enterprise.drawio` (incluido).
 
