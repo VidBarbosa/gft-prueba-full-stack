@@ -1,0 +1,33 @@
+service: btg-funds-api
+
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: python3.12
+  region: us-east-1
+  environment:
+    APP_ENV: prod
+    APP_NAME: btg-backend
+    SECRET_KEY: ${ssm:/btg/secret_key}
+    JWT_EXPIRE_MINUTES: 60
+    # En AWS se sugiere usar DynamoDB/DocumentDB; aquí solo variables de ejemplo.
+
+functions:
+  api:
+    handler: awsgi_handler.handler
+    events:
+      - httpApi: '*'
+    package:
+      patterns:
+        - '!tests/**'
+        - '!sql/**'
+        - '!postman/**'
+        - '!docs/**'
+
+plugins:
+  - serverless-python-requirements
+
+custom:
+  pythonRequirements:
+    dockerizePip: true
